@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+.container {
+    h1 {
+        color      : #000;
+        user-select: none;
+
+        span {
+            font-size: 18px;
+            font-size: 18px;
+            font-family: 'Lora',
+                serif;
+        }
+
+        div {
+            i.mark-delete {
+                &:active {
+                    font-size: 9px !important;
+                }
+            }
+        }
+    }
+
+    .button {
+        .btn-plus {
+            height       : 150px;
+            width        : 150px;
+            border-radius: 6px;
+            border       : 1px dashed #ccc;
+
+            .btn-plus-icon {
+                font-size: 60px;
+            }
+        }
+    }
+
+    .table-container {
+        margin-top: 14px;
+        height    : calc(100vh - 161px);
+    }
+}

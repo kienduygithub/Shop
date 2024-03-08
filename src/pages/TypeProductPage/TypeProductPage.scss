@@ -1,0 +1,41 @@
+h3 {
+    font-family: 'Lora',
+        serif;
+    font-weight: 400;
+}
+
+.type-product-row {
+    padding-top: 10px;
+    flex-wrap  : nowrap;
+    height     : 100%;
+    font-size  : 18px !important;
+
+    .type-product-nav {
+        background-color: #fff;
+        margin-right    : 10px !important;
+        padding         : 10px !important;
+        border-radius   : 8px !important;
+        height          : fit-content !important;
+    }
+
+    .type-products {
+        display       : flex;
+        flex-direction: column;
+
+        .product-cards {
+            display        : flex;
+            flex-wrap      : wrap;
+            gap            : 15px;
+            justify-content: flex-start;
+            height         : fit-content;
+        }
+
+        .type-product-pagination {
+
+            .pagination {
+                text-align: center;
+            }
+        }
+    }
+
+}

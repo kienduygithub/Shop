@@ -1,0 +1,128 @@
+.profile-page-container {
+    height       : 100%;
+    margin-bottom: 50px;
+
+    h1 {
+        font-size  : 20px;
+        line-height: 32px;
+        font-weight: 300;
+        margin     : 0px 0px 12px;
+        padding-top: 4px;
+    }
+
+    .content-profile {
+        background-color: white;
+        display         : flex;
+        justify-content : space-between;
+        border-radius   : 8px;
+
+        .content-left {
+            width  : 55%;
+            padding: 16px 24px 16px 16px;
+
+            .info-title {
+                font-size  : 16px;
+                line-height: 24px;
+                font-weight: 400;
+                color      : #64646d;
+            }
+
+            div.info-left {
+                margin-top      : 16px;
+                border-radius   : 4px;
+                background-color: white;
+
+                .info-user {
+                    display: flex;
+
+                    .info-avatar {
+                        width: 30%;
+
+                        .ant-upload-wrapper {
+                            .ant-upload-list {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    .info-name {
+                        flex              : 1;
+                        display           : flex;
+                        // justify-content: space-between;
+                        flex-direction    : column;
+                        gap               : 34px;
+
+                        .user-id {
+                            display    : flex;
+                            align-items: center;
+
+                            label {
+                                width    : 30%;
+                                min-width: 120px;
+                            }
+                        }
+
+                        .name-user {
+                            display    : flex;
+                            align-items: center;
+
+                            label {
+                                width    : 30%;
+                                min-width: 120px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .content-vertical {
+            border-left: 1px solid rgb(235, 235, 240);
+            margin     : 16px 0;
+        }
+
+        .content-right {
+            flex          : 1;
+            padding       : 16px 24px 16px 16px;
+            display       : flex;
+            flex-direction: column;
+
+            .info-title {
+                font-size  : 14px;
+                line-height: 24px;
+                font-weight: 400;
+                color      : #64646d;
+            }
+
+            .info-item {
+                margin-bottom: 16px;
+
+                .list-item {
+                    display        : flex;
+                    justify-content: space-between;
+                    align-items    : center;
+                    padding        : 19px 0;
+                    width          : 100%;
+
+                    .info {
+                        display        : flex;
+                        flex-wrap      : nowrap;
+                        justify-content: space-between;
+                        gap            : 8px;
+
+                        .details {
+                            display       : flex;
+                            flex-direction: column;
+                        }
+                    }
+
+                    .status {
+                        flex           : 1 1 0%;
+                        display        : flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
+        }
+    }
+}

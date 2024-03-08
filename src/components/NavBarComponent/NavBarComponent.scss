@@ -1,0 +1,79 @@
+.nav-background {
+    background-color: white;
+}
+
+.navigation-container {
+
+    .nav-label {
+        color              : rgb(56, 56, 61);
+        font-size          : 18px !important;
+        font-weight        : 500;
+        // background-color: red;
+    }
+
+    .text-value-content {
+        display        : flex;
+        flex-direction : column;
+        justify-content: center;
+        gap            : 12px;
+        margin-bottom  : 8px !important;
+
+        .text-value {
+            color      : rgb(56, 56, 61);
+            font-size  : 15px !important;
+            font-weight: 400;
+            user-select: none;
+            transition : all 0.4s ease-in-out;
+
+            &:hover {
+                color: #1677ff;
+            }
+
+            &:active {
+                font-size: 10px;
+            }
+        }
+    }
+
+    .checkbox-value-content {
+        margin-top: 12px;
+
+        .checkbox-value-options {
+            width          : 100%;
+            display        : flex;
+            flex-direction : column;
+            justify-content: center;
+            align-items    : flex-start;
+            gap            : 12px;
+
+            .checkbox-value {}
+        }
+    }
+
+    .rate-star-content {
+        margin-top: 12px;
+
+        .star-rate-list {
+            display        : flex;
+            flex-direction : column;
+            justify-content: center;
+            gap            : 12px;
+        }
+    }
+
+    .price-content {
+        .price-text {
+            user-select: none;
+            font-size  : 15px !important;
+
+            &:hover {
+                border: 1px solid #1677ff !important;
+                color : #1677ff !important;
+            }
+
+            &:active {
+                transform: scale(0.9);
+            }
+        }
+    }
+}

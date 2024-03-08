@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+.report-container {
+    height    : calc(81vh + 11px);
+    width     : 100%;
+    box-sizing: border-box;
+
+    .report-header {
+        display    : flex;
+        align-items: center;
+        gap        : 10px;
+
+        h1 {
+            margin    : 0;
+            font-size : 18px;
+            margin-top: 11px;
+            font-family: 'Lora',
+                serif;
+            user-select: none;
+        }
+    }
+
+    .report-chart {
+        margin-top     : 10px;
+        height         : calc(100vh - 155px);
+        display        : flex;
+        flex-direction : column;
+        justify-content: center;
+
+        .quarter.quarter-up {
+            display           : flex;
+            // align-items    : center;
+            justify-content   : flex-start;
+            box-sizing        : border-box;
+            padding-top       : 10px;
+            gap               : 50px;
+            margin-left       : 50px;
+
+            .quarter-right,
+            .quarter-left,
+            .quarter-center {
+                user-select  : none;
+                width        : calc(30% - 48px);
+                padding      : 14px 18px;
+                border-radius: 4px;
+                border       : 1px solid black;
+                height       : 88px;
+                border       : 1px solid rgba(0, 0, 0, 0.2);
+                box-shadow   : rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+                h4 {
+                    margin     : 0;
+                    font-weight: 400;
+                    font-size  : 14px;
+                    font-family: 'Lora', serif;
+                }
+
+                div {
+                    display           : flex;
+                    align-items       : center;
+                    justify-content   : flex-start;
+                    gap               : 8px;
+                    // width          : 100%;
+
+                    .icon {
+                        font-size: 16px;
+                        color    : #7a7a7a;
+                    }
+
+                    .target-text {
+                        display    : flex;
+                        align-items: flex-end;
+                        position   : relative;
+
+                        h6 {
+                            margin     : 0;
+                            font-weight: 400;
+                            position   : absolute;
+                            right      : -62px;
+                            top        : 2px;
+                            font-size  : 10px;
+                        }
+                    }
+                }
+
+                .quarter-value {
+                    display     : flex;
+                    align-items : center;
+                    font-weight : bold;
+                    font-size   : 18px;
+                    margin-top  : 10px;
+                    padding-left: 15px;
+                }
+            }
+        }
+
+        .quarter.quarter-down {
+            flex          : 1;
+            display       : flex;
+            flex-direction: column;
+            margin-top    : auto;
+
+            h4 {
+                margin        : 0;
+                font-weight   : 500;
+                font-size     : 14px;
+                position      : absolute;
+                top           : -44px;
+                left          : 48px;
+                z-index       : 99;
+                // width      : 100%;
+                padding-top   : 18px;
+                font-family   : 'Lora',
+                    serif;
+                user-select: none;
+            }
+
+            .button-export-excel-report {
+                transition: all 0.025s ease-in-out;
+
+                &:hover {
+                    background-color: rgba(22, 119, 255, 0.45) !important;
+                    color           : white;
+                }
+            }
+        }
+    }
+}
