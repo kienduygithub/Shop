@@ -1,0 +1,40 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node src/server.js"
+  },
+  "keywords": [
+    "fullstack",
+    "nodejs",
+    "express",
+    "KienDuy"
+  ],
+  "author": "Kien Duy",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2", 
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "10.0.0", 
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mysql2": "^3.1.0",
+    "nodemailer": "^6.9.1",
+    "nodemailer-plugin-inline-base64": "^2.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.4",
+    "@babel/core": "^7.23.6",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.6",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^2.0.7",
+    "sequelize": "^6.33.0",
+    "sequelize-cli": "^6.2.0"  
+  }
+}
