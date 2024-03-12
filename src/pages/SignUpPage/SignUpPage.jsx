@@ -13,44 +13,104 @@ import { useMutationHooks } from "../../hooks/userMutationHook";
 import * as userServices from '../../services/userServices'
 import * as message from '../../components/Message/Message'
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponet";
+import _ from "lodash";
 const SignUpPage = () => {
-    const [isShow, setIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const ShowHide = () => {
-        setIsShow(!isShow)
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const defaultValid = {
+        email: true,
+        password: true,
+        confirmPassword: true
     }
+    const [isValidInputs, setIsValidInputs] = useState(defaultValid);
+    const [errMsg, setErrMsg] = useState('');
     const navigate = useNavigate()
     const handleNavigationSignIn = () => {
         navigate('/sign-in')
     }
     const handleOnchangeEmail = (e) => {
         setEmail(e.target.value);
+        if(email !== '') {
+            const _isValidInputs = _.cloneDeep(isValidInputs);
+            _isValidInputs['email'] = true;
+            setIsValidInputs(_isValidInputs);
+        }
     }
     const handleOnchangePassword = (e) => {
         setPassword(e.target.value);
+        if(password !== '') {
+            const _isValidInputs = _.cloneDeep(isValidInputs);
+            _isValidInputs['password'] = true;
+            setIsValidInputs(_isValidInputs);
+        }
     }
     const handleOnchangeConfirmPassword = (e) => {
         setConfirmPassword(e.target.value);
+        if(confirmPassword !== '') {
+            const _isValidInputs = _.cloneDeep(isValidInputs);
+            _isValidInputs['confirmPassword'] = true;
+            setIsValidInputs(_isValidInputs);
+        }
     }
     
-    const mutation = useMutationHooks(
+    const mutationSignUp = useMutationHooks(
         data => userServices.signupUser(data)
     )
-    const {data, isLoading, isSuccess, isError} = mutation;
+    const {data: dataSignUp, isLoading: isLoadingSignUp, isSuccess: isSuccessSignUp} = mutationSignUp;
     useEffect(() => {
-        if(isSuccess){
-            message.success();
+        if(dataSignUp && dataSignUp.status === 'OK'){
+            message.success("Người dùng đã được tạo thành công...");
             navigate('/sign-in');
-        }else if(isError){
-            message.error();
+        } else if(dataSignUp && dataSignUp.status === 'ERR') {
+            console.log(dataSignUp.message);
+            if(dataSignUp.err_fields) {
+                setErrMsg(dataSignUp.message);
+                const _isValidInputs = _.cloneDeep(isValidInputs);
+                _isValidInputs['email'] = false;
+                setIsValidInputs(_isValidInputs);
+            } 
         }
-    }, [isSuccess, isError])
+        // console.log('dataSignUp: ', dataSignUp);
+    }, [dataSignUp])
+
+    const validInputs = () => {
+        const arrErr = [];
+        if(!email) {
+            arrErr.push('email');
+        }
+        if(!password) {
+            arrErr.push('password');
+        }
+        if(!confirmPassword) {
+            arrErr.push('confirmPassword', 'password');
+        }
+        if(password !== confirmPassword) {
+            arrErr.push('confirmPassword', 'password', 'isSame');
+        }
+        if(arrErr.length > 0) {
+            const _isValidInputs = _.cloneDeep(isValidInputs);
+            arrErr.forEach(err => {
+                _isValidInputs[err] = false;
+            });
+            let checkErrSamePassword = arrErr.some(item => item === 'isSame');
+            if(!checkErrSamePassword) {
+                setErrMsg("Không được để trống thông tin...");
+            } else {
+                setErrMsg("Mật khẩu không trùng khớp...");
+            } 
+            setIsValidInputs(_isValidInputs);
+            return false;
+        }
+        setErrMsg('')
+        return true;
+    }
+
     const handleSignUp = async () => {
-        console.log('>>> Sign up: ', email, password, confirmPassword)
-        mutation.mutate({ email, password, confirmPassword})
-        console.log('>>> Mutation Sign-up: ', mutation)
+        const isValid = validInputs();
+        if(isValid) {
+            mutationSignUp.mutate({ email, password, confirmPassword})
+        }
     }
     return(
         <div className="background">
@@ -59,41 +119,35 @@ const SignUpPage = () => {
                     <h1>Xin chào,</h1>
                     <p>Đăng nhập và tạo tài khoản</p>
                     <InputFormComponent 
-                        className="input"
-                        placeholder="abc@gmail.com"
+                        className={isValidInputs.email ? "input form-control" : "input form-control is-invalid"}
+                        placeholder="Nhập địa chỉ email"
                         type="email"
-                        valueInput={email}
+                        valueinput={email}
                         onChange={(e) => handleOnchangeEmail(e)}
                     />
                     <div className="input-password">
                         <InputFormComponent 
-                            className="input"
-                            placeholder="password"
-                            type={isShow ? 'text': 'password'}
-                            valueInput={password}
+                            className={isValidInputs.password ? "input form-control" : "input form-control is-invalid"}
+                            placeholder="Nhập mật khẩu"
+                            type="password"
+                            valueinput={password}
                             onChange={(e) => handleOnchangePassword(e)}
                         />
-                        <span className="text-showhide" onClick={() => ShowHide()}>
-                            {isShow === false ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-                        </span>
                     </div>
-                    <InputFormComponent 
-                        className="input"
-                        placeholder= 'Confirm password'
-                        type='password'
-                        valueInput={confirmPassword}
-                        onChange={(e) => handleOnchangeConfirmPassword(e)}
-                    />
-                    {data?.status === 'ERR' && <span style={{color: 'red', fontSize:'9px'}}>{data?.message}</span>}
-                    {data?.response.status === 'ERR' && <span style={{color: 'red', fontSize:'9px'}}>{data?.response.message}</span>}
-                    <LoadingComponent isLoading={isLoading}>
+                    <div className="input-confirm-password">
+                        <InputFormComponent 
+                            className={isValidInputs.confirmPassword ? "input form-control" : "input form-control is-invalid"}
+                            placeholder= 'Nhập lại mật khẩu'
+                            type='password'
+                            valueinput={confirmPassword}
+                            onChange={(e) => handleOnchangeConfirmPassword(e)}
+                        />
+                        {errMsg !== '' && <span className="err-msg">{errMsg}</span>}
+                    </div>
+                    <LoadingComponent isLoading={isLoadingSignUp}>
                     <ButtonComponent 
-                        disabled={ 
-                            !email.length || !password.length || !confirmPassword.length ?
-                            true : false
-                        }
                         onClick={() => handleSignUp()}
-                        bordered={false}
+                        bordered="false"
                         size={40}
                         styleButton={{
                             backgroundColor: 'rgb(255, 57, 69)',

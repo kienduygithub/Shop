@@ -124,7 +124,7 @@ const ResetPasswordPage = () => {
                                         className="input"
                                         placeholder=""
                                         type="text"
-                                        valueInput={otp}
+                                        valueinput={otp}
                                         onChange={(e) => handleOnChangeOTP(e)}
                                     />
                                 </div>
@@ -161,7 +161,7 @@ const ResetPasswordPage = () => {
                                         className="input"
                                         placeholder="New password"
                                         type={isShow ? 'text' : 'password'}
-                                        valueInput={password}
+                                        valueinput={password}
                                         onChange={(e) => handleOnchangePassword(e)}
                                     />
                                     <span className="text-showhide" onClick={() => ShowHide()}>
@@ -174,7 +174,7 @@ const ResetPasswordPage = () => {
                                         className="input"
                                         placeholder="Confirm password"
                                         type={isShow ? 'text' : 'password'}
-                                        valueInput={confirmPassword}
+                                        valueinput={confirmPassword}
                                         onChange={(e) => handleOnchangeConfirmPassword(e)}
                                     />
                                     <span className="text-showhide" onClick={() => ShowHide()}>

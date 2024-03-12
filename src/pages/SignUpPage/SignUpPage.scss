@@ -28,16 +28,15 @@
                 margin-bottom: 20px;
             }
 
-            .input-password {
+            .input-confirm-password {
                 position: relative;
 
-                .text-showhide {
-                    font-size: 14px;
-                    color    : #0d5cb6;
+                span {
                     position : absolute;
-                    right    : 5px;
-                    top      : 35%;
-                    transform: translateY(-50%);
+                    top      : 45px;
+                    left     : 12px;
+                    font-size: 12px;
+                    color    : red;
                 }
             }
 

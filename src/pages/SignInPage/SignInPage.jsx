@@ -115,7 +115,6 @@ const SignInPage = () => {
         }
     }
     return(
-        
         <div className="background">
             <div className="sign-in-container">
                 <div className="container-left">
@@ -126,7 +125,7 @@ const SignInPage = () => {
                             className={isValidInput.email === true ? "input form-control" : "input form-control is-invalid"} 
                             placeholder="Nhập email"
                             type="email"
-                            valueInput={email}
+                            valueinput={email}
                             onChange={(e) => handleOnchangeEmail(e)}
                         />
                     </div>
@@ -136,7 +135,7 @@ const SignInPage = () => {
                                 className={isValidInput.password === true ? "input form-control" : "input form-control is-invalid"}
                                 placeholder="Nhập mật khẩu"
                                 type={'password'}
-                                valueInput={password}
+                                valueinput={password}
                                 onChange={(e) => handleOnchangePassword(e)}
                                 onKeyDown={(e) => handleEnterLogin(e)}
                             />
@@ -146,7 +145,7 @@ const SignInPage = () => {
                     <LoadingComponent isLoading={isLoading}>
                         <ButtonComponent 
                             onClick={() => handleSignIn()}
-                            bordered={false}
+                            bordered="false"
                             size={40}
                             styleButton={{
                                 backgroundColor: 'rgb(255, 57, 69)',

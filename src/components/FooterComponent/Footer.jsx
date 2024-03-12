@@ -37,10 +37,10 @@ const Footer = ({isHiddenFooter}) => {
                         <h4>Kết nối với chúng tôi</h4>
                         <div className="social-connect">
                             <div className="social-icon facebook">
-                                <i class="fa-brands fa-facebook-f"></i>
+                                <i className="fa-brands fa-facebook-f"></i>
                             </div>
                             <div className="social-icon youtube">
-                                <i class="fa-brands fa-youtube"></i>
+                                <i className="fa-brands fa-youtube"></i>
                             </div>
                             <div className="social-icon google">
                                 <i className="fa-brands fa-google"></i>

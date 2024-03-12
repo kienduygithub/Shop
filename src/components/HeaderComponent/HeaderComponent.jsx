@@ -7,7 +7,8 @@ import {
 import {
     UserOutlined,
     CaretDownOutlined,
-    ShoppingCartOutlined
+    ShoppingCartOutlined,
+    ShopOutlined
 } from '@ant-design/icons';
 import {
     WrapperHeader,
@@ -24,10 +25,12 @@ import * as userServices from '../../services/userServices'
 import { useDispatch } from "react-redux";
 import { resetUser } from "../../redux/slices/userSlice";
 import LoadingComponent from "../LoadingComponent/LoadingComponet";
-import { searchProduct } from "../../redux/slices/productSlice";
-import { jwtDecode } from "jwt-decode";
-import { isJsonString } from "../../utils";
+import { resetSearch, searchProduct } from "../../redux/slices/productSlice";
 import { resetCart } from "../../redux/slices/orderSlice";
+import {useQuery} from "react-query";
+import * as productServices from '../../services/productServices';
+import {useDebounce} from "../../hooks/useDebounce";
+import { Scrollbars } from 'react-custom-scrollbars';
 const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -91,8 +94,35 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
         }
         setIsOpenPopup(false)
     }
-    
-    return(
+    // POPUP SEARCH
+    const [productSearchs, setProductSearchs] = useState([]);
+    const fetchProductSearch = async (context) => {
+        const limit = context && context.queryKey && context.queryKey[1];
+        const search_info = context && context.queryKey && context.queryKey[2];
+        if(search_info !== '') {
+            const response = await productServices.getAllProduct(search_info, limit);
+            return response;
+        }
+    }
+    let product_search = useSelector(state => state.product.search);
+    let searchDebounce = useDebounce(product_search, 1000);
+    const {data: productSearch} = useQuery({queryKey: ["product_search", 6, searchDebounce], queryFn: fetchProductSearch});
+    const handleNavigateDetailProduct = (productId) => {
+        dispatch(resetSearch());
+        navigate(`/product-details/${productId}`);
+    }
+    const handleBtnMore = () => {
+        navigate(`/product/${productSearchs[0].type.normalize('NFD').replace(/[\u0300-\u036f]/g, '')?.replace(/ /g, '_')?.replace(/đ/g, 'd').replace(/Đ/g, 'D')}`, {state: productSearchs[0].type})
+        dispatch(resetSearch());
+    }
+    useEffect(() => {
+        if(productSearch && productSearch.data && productSearch.data.length > 0) {
+            setProductSearchs(productSearch.data);
+        } else {
+            setProductSearchs([]);
+        }
+    }, [productSearch]);
+    return (
         <div className="header-container">
             <WrapperHeader className="header-content">
                 <Col span={6}>
@@ -104,16 +134,60 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                     </span>
                 </Col>
                 { isHiddenSearch === false ?
-                    <Col span={12}>
+                    <Col span={12} className="navigation-search">
                         <ButtonInputSearch
                             size={'large'}
                             placeholder={'Nhập tên sản phẩm'}
                             textbutton={'Tìm kiếm'}
                             onChange={onSearch}
+                            value={product_search}
                         />
+                        {
+                            searchDebounce !== '' &&
+                                <div className="popup-search">
+                                    <Scrollbars autoHide height={260}>
+                                        <div className="search-title">
+                                            <ShopOutlined className="icon" />
+                                            <span style={{color: 'black'}}>Tìm Shop "{product_search}"</span>
+                                        </div>
+                                        <div className="search-results">
+                                            {
+                                                productSearchs && productSearchs.length > 0 ?
+                                                    <>
+                                                        {   
+                                                            productSearchs.map((product) => {
+                                                                return (
+                                                                    <div className="result-child" key={`result-${product.id}`}
+                                                                        onClick={() => handleNavigateDetailProduct(product.id)}
+                                                                    >
+                                                                        <div className="result-image">
+                                                                            <img src={product.image} alt="Hình ảnh sản phẩm"/>
+                                                                        </div>
+                                                                        <div className="result-detail">
+                                                                            <h4 className="name">{product.name}</h4>
+                                                                            <span className="price">{product.price}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        
+                                                        }
+                                                    </>
+                                                    :
+                                                    <span style={{color: "rgba(0, 0, 0, 0.86)", paddingLeft: '10px', height: '20px'}}>Không tìm thấy kết quả...</span>
+                                            }    
+                                        </div>
+                                        {
+                                            productSearchs.length !== 0 &&
+                                                <button className="btn-more" onClick={() => handleBtnMore()}>
+                                                    Xem thêm
+                                                </button>
+                                        }
+                                    </Scrollbars>   
+                                </div>
+                        }
                     </Col>
                   :
-                    // <Col span={12}></Col>
                     <></>
                 }
                 <Col span={6} className="header-right">

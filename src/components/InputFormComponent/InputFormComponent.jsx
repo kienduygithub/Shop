@@ -7,7 +7,7 @@ const InputFormComponent = ( props ) => {
     return(
         <Input 
             placeholder={placeholder}
-            value={props.valueInput}
+            value={props.valueinput}
             // onChange={(e) => onChangeInput(e)}
             // hidden={true}
             {...rests}

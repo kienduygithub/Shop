@@ -11,18 +11,19 @@ const ButtonInputSearch = (props) => {
         size, placeholder, textbutton,
         bordered, backgroundColorInput = '#fff',
         backgroundColorButton = '#0d5cb6',
-        colorButton = '#fff'
+        colorButton = '#fff', value
     } = props 
     return (
         <div className="header-search">
             <InputComponent 
                 size={size}
                 placeholder={placeholder}
-                bordered={bordered}
+                bordered="false"
                 style={{
                     backgroundColorInput: backgroundColorInput,
                     borderRadius: '5px 0 0 5px'
                 }}
+                value={value}
                 {...props}
             />
             <Button size={size} 

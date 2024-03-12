@@ -245,7 +245,7 @@ const ProfilePage = () => {
                                             <label htmlFor="name" className="form-label">Tên người dùng</label>
                                             <InputFormComponent id="name" value={name} onChange={(e) => handleOnChangeName(e)}
                                                 className="form-input"
-                                                // bordered={false}
+                                                // bordered={false}={false}
                                             />
                                         </div>
                                         <ButtonComponent

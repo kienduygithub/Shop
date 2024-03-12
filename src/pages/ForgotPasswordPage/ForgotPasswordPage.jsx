@@ -64,7 +64,7 @@ const ForgotPasswordPage = () => {
                         className="input"
                         placeholder="abc@gmail.com"
                         type="email"
-                        valueInput={email}
+                        valueinput={email}
                         onChange={(e) => handleOnchangeEmail(e)}
                     />
                     {/* {isOtp && <div style={{ textAlign: 'right' }}><span style={{ fontSize: '11px', fontWeight: '400' }}>Mã OTP vừa được gửi đến {email}, kiểm tra trước khi hết hạn</span></div>} */}
@@ -74,7 +74,7 @@ const ForgotPasswordPage = () => {
                             true : false
                         }
                         onClick={() => handleGetResetOTP()}
-                        bordered={false}
+                        bordered="false"
                         size={40}
                         styleButton={{
                             backgroundColor: 'rgb(255, 57, 69)',
