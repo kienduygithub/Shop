@@ -1,4 +1,4 @@
-import { Op } from "sequelize"
+import {Op} from "sequelize"
 import db from "../models"
 
 // CREATE PRODUCT
@@ -8,16 +8,16 @@ const createProduct = (newProduct) => {
             const {
                 name, image, type, price, countInStock, rating, description, discount, selled
             } = newProduct
-            if (!name || !image || !type || !price || !countInStock || !rating) {
+            if(!name || !image || !type || !price || !countInStock || !rating) {
                 return res.status(200).json({
                     status: 'ERR',
                     message: 'The input is required'
                 })
             }
             const checkProduct = await db.Product.findOne({
-                where: { name: name }
+                where: {name: name}
             });
-            if (checkProduct !== null) {
+            if(checkProduct !== null) {
                 resolve({
                     status: 'OK',
                     message: 'The name of product is already'
@@ -35,16 +35,16 @@ const createProduct = (newProduct) => {
                 selled: Number(selled)
             })
             const newCategory = await db.Category.findOrCreate({
-                where: { type: type }
+                where: {type: type}
             })
-            if (createdProduct) {
+            if(createdProduct) {
                 resolve({
                     status: 'OK',
                     message: 'CREATE PRODUCT SUCCESS',
                     data: createdProduct
                 })
             }
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -55,10 +55,10 @@ const updateProduct = (id, data) => {
         try {
             console.log('>>> Given data: ', data)
             let product = await db.Product.findOne({
-                where: { id: id }
+                where: {id: id}
             })
             console.log('>>> Given product: ', product)
-            if (product) {
+            if(product) {
                 product.name = data.name;
                 product.image = data.image;
                 product.type = data.type;
@@ -82,8 +82,8 @@ const updateProduct = (id, data) => {
                     message: 'The product is not defined'
                 })
             }
-            resolve({ name: 'ccc' })
-        } catch (error) {
+            resolve({name: 'ccc'})
+        } catch(error) {
             reject(error)
         }
     })
@@ -93,10 +93,10 @@ const deleteProduct = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
             let product = await db.Product.findOne({
-                where: { id: id }
+                where: {id: id}
             })
             let response = {}
-            if (!product) {
+            if(!product) {
                 response = {
                     status: 'OK',
                     message: 'The product is not defined'
@@ -113,7 +113,7 @@ const deleteProduct = (id) => {
                 }
             }
             resolve(response)
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -124,9 +124,9 @@ const getDetailProduct = (id) => {
         try {
             let product = await db.Product.findOne({
                 raw: true,
-                where: { id: id }
+                where: {id: id}
             })
-            if (!product) {
+            if(!product) {
                 resolve({
                     status: 'OK',
                     message: 'The user is not defined'
@@ -138,7 +138,7 @@ const getDetailProduct = (id) => {
                     data: product
                 })
             }
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -238,9 +238,9 @@ const getAllProduct = (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
         try {
             const totalProducts = await db.Product.count();
-            if (sort && !filter) {
+            if(sort && !filter) {
                 sort.reverse();
-                if (limit) {
+                if(limit) {
                     const productListSort = await db.Product.findAll({
                         limit: limit,
                         order: [sort],
@@ -267,17 +267,17 @@ const getAllProduct = (limit, page, sort, filter) => {
                     pageCurrent: Number(page + 1),
                     totalPage: totalProducts / productListSort.length
                 })
-            } else if (filter) {
+            } else if(filter) {
                 let objectFilter = {};
                 objectFilter[filter[0]] = {
-                    [Op.like]: `${filter[1]}%`
+                    [Op.like]: `%${filter[1]}%`
                 }
                 const totalCount = await db.Product.count({
-                    where: { ...objectFilter }
+                    where: {...objectFilter}
                 })
-                if (limit && !sort) {
+                if(limit && !sort) {
                     const productListFilter = await db.Product.findAll({
-                        where: { ...objectFilter },
+                        where: {...objectFilter},
                         limit: limit,
                         offset: limit * page
                     })
@@ -289,10 +289,10 @@ const getAllProduct = (limit, page, sort, filter) => {
                         pageCurrent: Number(page + 1),
                         totalPage: Math.ceil(totalCount / limit)
                     })
-                } else if (limit && sort) {
+                } else if(limit && sort) {
                     sort.reverse();
                     const productListFilter = await db.Product.findAndCountAll({
-                        where: { ...objectFilter },
+                        where: {...objectFilter},
                         order: [sort],
                         limit: limit,
                         offset: limit * page
@@ -305,14 +305,14 @@ const getAllProduct = (limit, page, sort, filter) => {
                         pageCurrent: Number(page + 1),
                         totalPage: Math.ceil(productListFilter.count / limit)
                     })
-                } else if (!limit && sort) {
+                } else if(!limit && sort) {
                     sort.reverse();
                     const productListSortedFilter = await db.Product.findAndCountAll({
-                        where: { ...objectFilter },
+                        where: {...objectFilter},
                         order: [sort],
                         logger: true
                     })
-                    const { rows, count } = productListSortedFilter;
+                    const {rows, count} = productListSortedFilter;
                     resolve({
                         status: 'OK',
                         message: 'ALL NOLIMIT SORT FILTERED PRODUCTS',
@@ -333,8 +333,8 @@ const getAllProduct = (limit, page, sort, filter) => {
                     pageCurrent: Number(page + 1),
                     totalPage: 1
                 })
-            } else if (!filter && !sort) {
-                if (limit > 0) {
+            } else if(!filter && !sort) {
+                if(limit > 0) {
                     const productList = await db.Product.findAll({
                         limit: limit,
                         offset: page * limit,
@@ -349,7 +349,7 @@ const getAllProduct = (limit, page, sort, filter) => {
                     })
                 }
                 const productList = await db.Product.findAll();
-                if (productList && productList.length > 0) {
+                if(productList && productList.length > 0) {
                     resolve({
                         status: 'OK',
                         message: 'ALL PRODUCTS',
@@ -365,7 +365,7 @@ const getAllProduct = (limit, page, sort, filter) => {
                     })
                 }
             }
-        } catch (error) {
+        } catch(error) {
             reject(error);
         }
     })
@@ -378,7 +378,7 @@ const getLatestProduct = (limit, sort) => {
                 limit: limit ? limit : 10,
                 order: [sort],
             })
-            if (!productLatests) {
+            if(!productLatests) {
                 resolve({
                     status: 'ERR',
                     message: 'Not found'
@@ -391,7 +391,7 @@ const getLatestProduct = (limit, sort) => {
                 total: productLatests.rows.length
             })
 
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -405,11 +405,11 @@ const getByRange = (filter, min, max, limit, page) => {
             objectFilter[filter[0]] = {
                 [Op.like]: `${filter[1]}%`
             }
-            const { count, rows } = await db.Product.findAndCountAll({
+            const {count, rows} = await db.Product.findAndCountAll({
                 raw: true,
                 where: {
                     ...objectFilter,
-                    price: { [Op.between]: [min, max] }
+                    price: {[Op.between]: [min, max]}
                 },
                 limit: limit
             })
@@ -422,7 +422,7 @@ const getByRange = (filter, min, max, limit, page) => {
                 totalPage: Math.ceil(count / limit)
             })
 
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -432,7 +432,7 @@ const deleteMany = (ids) => {
     return new Promise(async (resolve, reject) => {
         try {
             await db.Product.destroy({
-                where: { id: ids }
+                where: {id: ids}
             })
             let productList = await db.Product.findAll({
                 raw: true
@@ -442,7 +442,7 @@ const deleteMany = (ids) => {
                 message: 'DELETE SUCCESS',
                 data: productList
             })
-        } catch (error) {
+        } catch(error) {
             resolve(error);
         }
     })
@@ -460,7 +460,7 @@ const getAllType = () => {
                 message: 'ALL TYPE SUCCESS',
                 data: allType
             });
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })

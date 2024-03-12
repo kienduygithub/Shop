@@ -14,10 +14,11 @@ const createUser = (newUser) => {
                 where: {email: email},
                 raw: true
             })
-            if (checkUser !== null) {
+            if(checkUser !== null) {
                 resolve({
                     status: 'ERR',
-                    message: 'The email is already'
+                    message: 'Người dùng đã tồn tại. Vui lòng nhập email khác...',
+                    err_fields: 'email'
                 })
             } else {
                 let hashedPassword = await hashPassword(password)
@@ -25,7 +26,7 @@ const createUser = (newUser) => {
                     email: email,
                     password: hashedPassword,
                 })
-                if (createUser) {
+                if(createUser) {
                     resolve({
                         status: 'OK',
                         message: 'SUCCESS',
@@ -33,7 +34,7 @@ const createUser = (newUser) => {
                     })
                 }
             }
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -43,7 +44,7 @@ const hashPassword = (password) => {
         try {
             let newPassword = bcrypt.hashSync(password, salt)
             resolve(newPassword)
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -58,9 +59,9 @@ const loginUser = (userCheck) => {
                 raw: true,
                 logger: false
             })
-            if (user) {
+            if(user) {
                 const comparePassword = await bcrypt.compareSync(password, user.password);
-                if (!comparePassword) {
+                if(!comparePassword) {
                     resolve({
                         status: 'ERR',
                         message: 'Wrong password!',
@@ -90,7 +91,7 @@ const loginUser = (userCheck) => {
                     err_fields: 'email'
                 })
             }
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -103,23 +104,23 @@ const updateUser = (id, data) => {
                 where: {id: id},
             })
             let response = {}
-            if (user) {
-                if (data?.name) {
+            if(user) {
+                if(data?.name) {
                     user.name = data.name;
                 }
-                if (data?.email) {
+                if(data?.email) {
                     user.email = data.email;
                 }
-                if (data?.phone) {
+                if(data?.phone) {
                     user.phone = data.phone;
                 }
-                if (data?.address) {
+                if(data?.address) {
                     user.address = data.address;
                 }
-                if (data?.avatar) {
+                if(data?.avatar) {
                     user.avatar = data.avatar;
                 }
-                if (data?.city) {
+                if(data?.city) {
                     user.city = data.city
                 }
                 await user.save();
@@ -137,7 +138,7 @@ const updateUser = (id, data) => {
             }
             resolve(response)
 
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -150,7 +151,7 @@ const deleteUser = (id) => {
                 where: {id: id}
             })
             let response = {}
-            if (!user) {
+            if(!user) {
                 response = {
                     status: 'OK',
                     message: 'The user is not defined'
@@ -167,7 +168,7 @@ const deleteUser = (id) => {
                 }
             }
             resolve(response)
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -179,7 +180,7 @@ const getAllUser = () => {
             let userList = await db.User.findAll({
                 raw: true,
             })
-            if (userList && userList.length > 0) {
+            if(userList && userList.length > 0) {
                 resolve({
                     status: 'OK',
                     message: 'All Users here!',
@@ -191,7 +192,7 @@ const getAllUser = () => {
                     message: 'Not Found'
                 })
             }
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -205,7 +206,7 @@ const getDetailUser = (id) => {
                 where: {id: id},
 
             })
-            if (!user) {
+            if(!user) {
                 resolve({
                     status: 'OK',
                     message: 'The user is not defined'
@@ -217,7 +218,7 @@ const getDetailUser = (id) => {
                     data: user
                 })
             }
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -238,7 +239,7 @@ const deleteMany = (ids) => {
                 message: 'DELETE SUCCESS',
                 data: userList
             })
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -250,7 +251,7 @@ const changePassword = (id, data) => {
             let user = await db.User.findOne({
                 where: {id: id}
             })
-            if (!user) {
+            if(!user) {
                 resolve({
                     status: 'ERR',
                     message: 'The user is not defined'
@@ -259,7 +260,7 @@ const changePassword = (id, data) => {
             let curPasswordHashed = user.password
             let {password, newPassword} = data;
             let isPasswordCorrect = await bcrypt.compareSync(password, curPasswordHashed);
-            if (!isPasswordCorrect) {
+            if(!isPasswordCorrect) {
                 resolve({
                     status: 'ERR',
                     message: 'The password is incorrect'
@@ -277,7 +278,7 @@ const changePassword = (id, data) => {
                     data: dataUser
                 })
             }
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -289,7 +290,7 @@ const forgotPassword = (email) => {
             let user = await db.User.findOne({
                 where: {email: email}
             })
-            if (!user) {
+            if(!user) {
                 resolve({
                     status: 'ERR',
                     message: 'The user is not defined'
@@ -307,7 +308,7 @@ const forgotPassword = (email) => {
                 message: 'FORGOT PASSWORD',
                 data: {resetToken, passwordResetToken, passwordResetExpires},
             })
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -323,7 +324,7 @@ const createPasswordChangedToken = () => {
                 passwordResetToken,
                 passwordResetExpires
             })
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
@@ -340,7 +341,7 @@ const verifyOTP = (otp) => {
                     }
                 }
             })
-            if (!user) {
+            if(!user) {
                 resolve({
                     status: 'ERR',
                     message: 'INVALID OTP'
@@ -350,7 +351,7 @@ const verifyOTP = (otp) => {
                 status: 'OK',
                 message: 'VALID OTP'
             })
-        } catch (error) {
+        } catch(error) {
             reject(error);
         }
     })
@@ -363,7 +364,7 @@ const resetPassword = (password, otp) => {
                     passwordResetToken: otp
                 }
             })
-            if (!user) {
+            if(!user) {
                 resolve({
                     status: 'ERR',
                     message: 'The user is not defined'
@@ -379,7 +380,7 @@ const resetPassword = (password, otp) => {
                 status: 'OK',
                 message: 'RESET PASSWORD SUCCESS',
             })
-        } catch (error) {
+        } catch(error) {
             reject(error)
         }
     })
