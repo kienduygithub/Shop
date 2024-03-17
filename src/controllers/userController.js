@@ -16,7 +16,7 @@ const createUser = async (req, res) => {
         } else if(!isCheckEmail) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'Nhập đúng định dạng email...',
+                message: 'Vui lòng nhập đúng định dạng email...',
                 err_fields: 'email'
             });
         } else if(password !== confirmPassword) {
@@ -46,12 +46,14 @@ const loginUser = async (req, res) => {
         if(!email || !password) {
             return res.status(200).json({
                 status: 'ERR',
-                message: `The input is required ${email}`
+                message: `Không để trống thông tin cần thiết...`,
+                err_fields: ['email', 'password']
             })
         } else if(!isCheckEmail) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The input is email'
+                message: 'Vui lòng nhập đúng định dạng email...',
+                err_fields: ['email']
             })
         }
         const response = await userService.loginUser(req.body);

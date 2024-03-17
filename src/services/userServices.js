@@ -64,8 +64,8 @@ const loginUser = (userCheck) => {
                 if(!comparePassword) {
                     resolve({
                         status: 'ERR',
-                        message: 'Wrong password!',
-                        err_fields: 'password'
+                        message: 'Email/Mật khẩu không chính xác. Vui lòng thử lại...',
+                        err_fields: ['email', 'password']
                     })
                 } else {
                     const access_token = await generalAccessToken({
@@ -87,8 +87,8 @@ const loginUser = (userCheck) => {
             } else {
                 resolve({
                     status: 'ERR',
-                    message: 'The email is not exist!!',
-                    err_fields: 'email'
+                    message: 'Email/Mật khẩu không chính xác. Vui lòng thử lại...',
+                    err_fields: ['email', 'password']
                 })
             }
         } catch(error) {
