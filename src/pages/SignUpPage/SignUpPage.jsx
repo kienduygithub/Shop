@@ -78,6 +78,16 @@ const SignUpPage = () => {
         const arrErr = [];
         if(!email) {
             arrErr.push('email');
+        } else {
+            const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.[a-zA-Z]{2,3}$/;
+            const isValidEmail = reg.test(email);
+            if(!isValidEmail) {
+                setErrMsg('Email không đúng định dạng. Vui lòng thử lại...');
+                setIsValidInputs({
+                    ...isValidInputs, email: false
+                });
+                return false;
+            }
         }
         if(!password) {
             arrErr.push('password');
@@ -160,7 +170,8 @@ const SignUpPage = () => {
                         textButton={'Tạo tài khoản'}
                         styleTextButton={{
                             color: '#fff', fontSize: '15px', fontWeight: '700'
-                        }}
+                            }}
+                            className="btn-sign-up"
                     />
                     </LoadingComponent>
                     <p>Bạn đã có tài khoản? <span className="text-create-account" onClick={() => handleNavigationSignIn()}>Đăng nhập</span></p>

@@ -90,3 +90,12 @@
         }
     }
 }
+
+.ant-spin-container {
+    button.btn-sign-up {
+        &:hover {
+            background-color: rgba(255, 57, 69, 0.86) !important;
+        }
+    }
+
+}

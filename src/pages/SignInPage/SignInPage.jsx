@@ -23,6 +23,7 @@ const SignInPage = () => {
         password: true
     }
     const [isValidInput, setIsValidInput] = useState(defaultValueInput);
+    const [errMsg, setErrMsg] = useState('');
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -69,7 +70,9 @@ const SignInPage = () => {
             } else if (data?.status === 'ERR') {
                 if (data?.err_fields) {
                     let _isValidInput = _.cloneDeep(isValidInput);
-                    _isValidInput[data.err_fields] = false;
+                    _isValidInput[data.err_fields[0]] = false;
+                    _isValidInput[data.err_fields[1]] = false;
+                    setErrMsg(data.message);
                     setIsValidInput(_isValidInput);
                 }
             }
@@ -86,6 +89,16 @@ const SignInPage = () => {
         let arrErr = [];
         if (!email) {
             arrErr.push('email');
+        } else {
+            const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.[a-zA-Z]{2,3}$/;
+            const isValidEmail = reg.test(email);
+            if(!isValidEmail) {
+                setErrMsg('Email không đúng định dạng. Vui lòng thử lại...');
+                setIsValidInput({
+                    ...isValidInput, email: false
+                });
+                return false;
+            }
         };
         if (!password) {
             arrErr.push('password');
@@ -95,6 +108,7 @@ const SignInPage = () => {
             arrErr.forEach((item) => {
                 _isValidInput[item] = false;
             })
+            setErrMsg("Không để trống thông tin cần thiết...");
             setIsValidInput(_isValidInput);
             return false;
         }
@@ -139,7 +153,7 @@ const SignInPage = () => {
                                 onChange={(e) => handleOnchangePassword(e)}
                                 onKeyDown={(e) => handleEnterLogin(e)}
                             />
-                            {data?.status === 'ERR' && <span className="text-error">{data?.message}</span>}
+                            {errMsg !== '' && <span className="text-error">{errMsg}</span>}
                         </div>
                     </div>
                     <LoadingComponent isLoading={isLoading}>
@@ -159,6 +173,7 @@ const SignInPage = () => {
                             styleTextButton={{
                                 color: '#fff', fontSize: '15px', fontWeight: '700'
                             }}
+                            className={'btn-sign-in'}
                         />
                     </LoadingComponent>
                     <span className="text-forget-password" onClick={() => navigate('/forgot-password', {state: location.pathname})}>Quên mật khẩu</span>
